@@ -1,6 +1,8 @@
 pipeline {
     agent any
-    stages {
+
+   
+   stages {
         stage('Check File') {
             steps {
                 script {
@@ -12,17 +14,6 @@ pipeline {
                 }
             }
         }
-        
-        // Autres étapes de votre pipeline
-    }
-    
-    post {
-        always {
-            // Nettoyage, notifications, etc.
-        }
-    }
-}
-
 
         stage('Build and Test') {
             steps {
