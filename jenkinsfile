@@ -8,45 +8,30 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build and Test') {
             steps {
-                script {
-                    sh 'npm install'
-                }
-            }
-        }
+                echo 'Étape de build et de test...'
 
-        stage('Build') {
-            steps {
-                script {
-                    sh 'npm run build'
-                }
-            }
-        }
+                // Installer les dépendances
+                sh 'npm install'
 
-        stage('Test') {
-            steps {
-                script {
-                    sh 'npm test'
-                }
-            }
-        }
+                // Construire l'application
+                sh 'npm run build'
 
-        stage('Deployment') {
-            steps {
-                script {
-                    echo 'Déploiement de l\'application...'
-                    // Ajoutez vos commandes de déploiement ici
-                }
+                // Exécuter les tests
+                sh 'npm test'
             }
         }
 
         stage('Demo') {
             steps {
-                script {
-                    echo 'Exécution de la démo...'
-                    // Ajoutez vos commandes de démo ici
-                }
+                echo 'Bienvenue dans la démo de la pipeline!'
+                echo 'Cette étape simule une démo de votre application.'
+                echo 'Vous pourriez effectuer des actions spécifiques à votre projet ici.'
+                echo 'Par exemple, afficher des informations, démarrer des serveurs de test, etc.'
+
+                // Exemple : Démarrer un serveur HTTP local pour simuler le déploiement
+                sh 'python -m http.server 8080 &'
             }
         }
     }
