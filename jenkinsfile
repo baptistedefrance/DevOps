@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Cette étape permet de récupérer le code depuis le référentiel Git
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Cette étape installe les dépendances Node.js et construit l'application
+                script {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Ajoutez ici vos commandes de test
+                script {
+                    sh 'npm test'
+                }
+            }
+        }
+
+        stage('Deployment') {
+            steps {
+                // Cette étape pourrait être utilisée pour déployer l'application
+                script {
+                    echo 'Déploiement de l\'application...'
+                    // Ajoutez vos commandes de déploiement ici
+                }
+            }
+        }
+
+        stage('Demo') {
+            steps {
+                // Cette étape peut être utilisée pour exécuter quelque chose spécifique pour la démo
+                script {
+                    echo 'Exécution de la démo...'
+                    // Ajoutez vos commandes de démo ici
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            // Cette section s'exécute en cas de succès du pipeline
+            echo 'Le pipeline a été exécuté avec succès!'
+        }
+        failure {
+            // Cette section s'exécute en cas d'échec du pipeline
+            echo 'Le pipeline a échoué. Veuillez vérifier les étapes précédentes.'
+        }
+    }
+}
