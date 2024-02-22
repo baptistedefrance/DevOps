@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        NODEJS_HOME = tool 'Node.js'
-        PATH = "${NODEJS_HOME}/bin:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -17,21 +12,6 @@ pipeline {
             steps {
                 script {
                     sh 'npm install'
-                }
-            }
-        }
-
-        stage('Check Express Dependency') {
-            steps {
-                script {
-                    def packageJson = readJSON file: 'package.json'
-                    def expressVersion = packageJson.dependencies.express
-
-                    if (expressVersion == null) {
-                        error 'La dépendance Express n\'a pas été trouvée dans le fichier package.json'
-                    } else {
-                        echo "La version de Express est: ${expressVersion}"
-                    }
                 }
             }
         }
