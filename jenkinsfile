@@ -1,19 +1,33 @@
 pipeline {
     agent any
 
+    environment {
+        // Définissez ici des variables d'environnement nécessaires pour votre build
+        NODEJS_HOME = tool 'Node.js' // Assurez-vous d'avoir une installation Node.js configurée dans Jenkins
+        PATH = "${NODEJS_HOME}/bin:${env.PATH}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Cette étape permet de récupérer le code depuis le référentiel Git
+                // Récupérer le code depuis le référentiel Git
                 checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Installer les dépendances Node.js
+                script {
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                // Cette étape installe les dépendances Node.js et construit l'application
+                // Construire l'application
                 script {
-                    sh 'npm install'
                     sh 'npm run build'
                 }
             }
@@ -21,7 +35,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Ajoutez ici vos commandes de test
+                // Exécuter les tests
                 script {
                     sh 'npm test'
                 }
@@ -30,7 +44,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                // Cette étape pourrait être utilisée pour déployer l'application
+                // Déployer l'application (ajoutez vos propres commandes de déploiement ici)
                 script {
                     echo 'Déploiement de l\'application...'
                     // Ajoutez vos commandes de déploiement ici
@@ -40,7 +54,7 @@ pipeline {
 
         stage('Demo') {
             steps {
-                // Cette étape peut être utilisée pour exécuter quelque chose spécifique pour la démo
+                // Exécuter quelque chose pour la démo (ajoutez vos propres commandes de démo ici)
                 script {
                     echo 'Exécution de la démo...'
                     // Ajoutez vos commandes de démo ici
