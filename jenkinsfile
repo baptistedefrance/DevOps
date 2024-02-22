@@ -1,54 +1,57 @@
 pipeline {
     agent any
 
-   
-   stages {
-        stage('Check File') {
+    environment {
+        // Définir les variables d'environnement si nécessaire
+    }
+
+    stages {
+        stage('Clone Repository') {
             steps {
-                script {
-                    if (fileExists('toto.txt')) {
-                        echo 'Le fichier toto.txt est présent.'
-                    } else {
-                        error 'Le fichier toto.txt est introuvable.'
-                    }
-                }
+                // Cloner à l'aide du plugin Git intégré
+                git url: 'https://github.com/baptistedefrance/DevOps.git', branch: 'main'
+                // Pour les dépôts privés, utilisez les credentials stockés dans Jenkins :
+                // git url: 'https://github.com/your-username/your-repo.git', branch: 'main', credentialsId: 'your-credentials-id'
             }
         }
 
-        stage('Build and Test') {
+        stage('Build') {
             steps {
-                echo 'Étape de build et de test...'
-
-                // Installer les dépendances
-                sh 'npm install'
-
-                // Construire l'application
-                sh 'npm run build'
-
-                // Exécuter les tests
-                sh 'npm test'
+                // Exécuter une commande shell
+                echo 'Building...'
+                sh 'echo "Running build commands"'
             }
         }
 
-        stage('Demo') {
+        stage('Test') {
             steps {
-                echo 'Bienvenue dans la démo de la pipeline!'
-                echo 'Cette étape simule une démo de votre application.'
-                echo 'Vous pourriez effectuer des actions spécifiques à votre projet ici.'
-                echo 'Par exemple, afficher des informations, démarrer des serveurs de test, etc.'
+                // Simuler un script de test
+                echo 'Testing...'
+                sh 'echo "Running tests"'
+            }
+        }
 
-                // Exemple : Démarrer un serveur HTTP local pour simuler le déploiement
-                sh 'python -m http.server 8080 &'
+        stage('Deploy') {
+            steps {
+                // Simuler un déploiement
+                echo 'Deploying...'
+                sh 'echo "Deploying application"'
             }
         }
     }
 
     post {
-        success {
-            echo 'Le pipeline a été exécuté avec succès!'
+        always {
+            // Nettoyage, archivage des artefacts, notifications, etc.
+            echo 'Build completed'
         }
+
+        success {
+            echo 'Build was successful!'
+        }
+
         failure {
-            echo 'Le pipeline a échoué. Veuillez vérifier les étapes précédentes.'
+            echo 'Build failed!'
         }
     }
 }
