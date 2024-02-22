@@ -2,22 +2,19 @@ pipeline {
     agent any
 
     environment {
-        // Définissez ici des variables d'environnement nécessaires pour votre build
-        NODEJS_HOME = tool 'Node.js' // Assurez-vous d'avoir une installation Node.js configurée dans Jenkins
+        NODEJS_HOME = tool 'Node.js'
         PATH = "${NODEJS_HOME}/bin:${env.PATH}"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Récupérer le code depuis le référentiel Git
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Installer les dépendances Node.js
                 script {
                     sh 'npm install'
                 }
@@ -26,7 +23,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Construire l'application
                 script {
                     sh 'npm run build'
                 }
@@ -35,7 +31,6 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Exécuter les tests
                 script {
                     sh 'npm test'
                 }
@@ -44,7 +39,6 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                // Déployer l'application (ajoutez vos propres commandes de déploiement ici)
                 script {
                     echo 'Déploiement de l\'application...'
                     // Ajoutez vos commandes de déploiement ici
@@ -54,7 +48,6 @@ pipeline {
 
         stage('Demo') {
             steps {
-                // Exécuter quelque chose pour la démo (ajoutez vos propres commandes de démo ici)
                 script {
                     echo 'Exécution de la démo...'
                     // Ajoutez vos commandes de démo ici
@@ -65,11 +58,9 @@ pipeline {
 
     post {
         success {
-            // Cette section s'exécute en cas de succès du pipeline
             echo 'Le pipeline a été exécuté avec succès!'
         }
         failure {
-            // Cette section s'exécute en cas d'échec du pipeline
             echo 'Le pipeline a échoué. Veuillez vérifier les étapes précédentes.'
         }
     }
