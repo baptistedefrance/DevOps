@@ -1,13 +1,28 @@
 pipeline {
     agent any
-
-   
     stages {
-        stage('Checkout') {
+        stage('Check File') {
             steps {
-                git 'https://github.com/baptistedefrance/DevOps.git'
+                script {
+                    if (fileExists('toto.txt')) {
+                        echo 'Le fichier toto.txt est présent.'
+                    } else {
+                        error 'Le fichier toto.txt est introuvable.'
+                    }
+                }
             }
         }
+        
+        // Autres étapes de votre pipeline
+    }
+    
+    post {
+        always {
+            // Nettoyage, notifications, etc.
+        }
+    }
+}
+
 
         stage('Build and Test') {
             steps {
