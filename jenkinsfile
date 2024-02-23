@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Définir les variables d'environnement si nécessaire
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -12,6 +8,19 @@ pipeline {
                 git url: 'https://github.com/baptistedefrance/DevOps.git', branch: 'main'
                 // Pour les dépôts privés, utilisez les credentials stockés dans Jenkins :
                 // git url: 'https://github.com/your-username/your-repo.git', branch: 'main', credentialsId: 'your-credentials-id'
+            }
+        }
+
+
+        stage('Check File') {
+            steps {
+                script {
+                    if (fileExists('toto.txt')) {
+                        echo 'Le fichier toto.txt est présent.'
+                    } else {
+                        error 'Le fichier toto.txt est introuvable.'
+                    }
+                }
             }
         }
 
@@ -30,7 +39,7 @@ pipeline {
                 sh 'echo "Running tests"'
             }
         }
-        
+
 
         stage('Deploy') {
             steps {

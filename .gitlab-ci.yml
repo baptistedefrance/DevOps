@@ -1,0 +1,7 @@
+stages:
+  - test
+
+check_toto_file:
+  stage: test
+  script:
+    - if [ -f toto.txt ]; then echo "Le fichier toto.txt est présent."; else echo "Erreur : Le fichier toto.txt est absent." && exit 1; fi
